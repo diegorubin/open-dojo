@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  devise_for :users
-  post 'streams/new'
 
+  devise_for :users
   resources :devices
 
-  # namespace :v1 do
-  get 'device/:id/list' => 'streams#list'
-  # end
+  namespace :v1 do
+    post 'streams/new'
+    get 'device/:id/streamlist' => 'streams#list'
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
