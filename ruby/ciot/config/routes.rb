@@ -1,3 +1,10 @@
+#/device/id/streams          - retorna ultimos 100
+#/device/id/streams/date  - retorna ultimos 100 daquela data. mantendo no maximo 60 dias de histórico
+#/device/id/streams/date/end_date - retorna os 100 ultimos registros do periodo informado *
+# verificar com data e hora
+
+
+
 Rails.application.routes.draw do
 
   devise_for :users
@@ -5,7 +12,9 @@ Rails.application.routes.draw do
 
   namespace :v1 do
     post 'streams/new'
-    get 'device/:id/streamlist' => 'streams#list'
+    get 'device/:id/streams' => 'streams#list'
+    get 'device/:id/streams/:date' => 'streams#list'
+    get 'device/:id/streams/:date/:end_date' => 'streams#list'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

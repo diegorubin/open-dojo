@@ -17,9 +17,21 @@ class V1::StreamsController < ApplicationController
   def list
     id = params[:id]
 
+    if params[:date]
+      date = params[:date]
+      end_date = params[:end_date] == nil ? date : params[:end_date] 
+      end_date = Date.parse end_date
+      end_date+= 1
+    end
+
     begin
       device = Device.find(id) if id
-      @streams = device.streams.select(:body,:created_at,:id).limit(100).map do |stream|
+      streams = device.streams.select(:body,:created_at,:id).limit(100)
+      
+      streams = streams.where("created_at >= ?", date) if date
+      streams = streams.where("created_at < ?", end_date) if end_date
+
+      @streams = streams.map do |stream|
         stream.body = JSON.parse(stream.body)
         stream
       end

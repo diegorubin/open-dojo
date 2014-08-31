@@ -5,6 +5,7 @@ class DevicesController < ApplicationController
   # GET /devices.json
   def index
     @devices = Device.all_from_user(current_user)
+    
   end
 
   # GET /devices/1
