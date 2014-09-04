@@ -21,7 +21,7 @@ class V1::StreamsController < ApplicationController
       date = params[:date]
       end_date = params[:end_date] == nil ? date : params[:end_date] 
       end_date = Date.parse end_date
-      end_date+= 1
+      end_date += 1.day
     end
 
     begin
