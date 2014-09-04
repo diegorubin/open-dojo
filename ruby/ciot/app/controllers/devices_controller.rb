@@ -56,10 +56,14 @@ class DevicesController < ApplicationController
   # DELETE /devices/1
   # DELETE /devices/1.json
   def destroy
-    @device.destroy
-    respond_to do |format|
-      format.html { redirect_to devices_url, notice: 'Device was successfully destroyed.' }
-      format.json { head :no_content }
+    if @device.user.id == current_user.id
+      @device.destroy
+      respond_to do |format|
+        format.html { redirect_to devices_url, notice: 'Device was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      render status: :bad_request
     end
   end
 
