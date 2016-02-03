@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'certified'
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'spartacus-cookbook', :path => 'my_cookbooks/dojo-cookbook'
+
