@@ -62,6 +62,11 @@ GEM
       pry (>= 0.9.12)
       shellany (~> 0.0)
       thor (>= 0.18.1)
+    guard-compat (1.2.1)
+    guard-cucumber (2.0.0)
+      cucumber (~> 2.0)
+      guard-compat (~> 1.0)
+      nenv (~> 0.1)
     her (0.8.1)
       activemodel (>= 3.0.0, <= 4.3.0)
       activesupport (>= 3.0.0, <= 4.3.0)
@@ -181,6 +186,7 @@ DEPENDENCIES
   dotenv
   gherkin
   guard
+  guard-cucumber
   her
   httparty
   httparty-cookies
