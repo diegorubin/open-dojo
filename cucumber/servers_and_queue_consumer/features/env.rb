@@ -7,6 +7,7 @@ require 'httparty'
 require 'capybara/poltergeist'
 require 'rubygems'
 
+# Configs for chrome
 Capybara.default_driver = :selenium
 Capybara.run_server = false
 
@@ -18,7 +19,7 @@ Capybara.javascript_driver = :chrome
 
 Capybara.page.driver.browser.manage.window.maximize
 
-# Capybara.default_driver = :selenium
+# Configs for phantomjs
 #Capybara.register_driver :poltergeist do |app|
 #  options = {
 #       :js_errors => false,
