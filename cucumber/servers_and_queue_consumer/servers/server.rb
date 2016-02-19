@@ -1,6 +1,8 @@
 require "sinatra"
 
 get '/api/:name' do
-  f = File.open("files/#{params[:name]}")
-  f.read
+  content_type 'plain/text'
+  content = File.open("files/#{params[:name]}").read
+  puts content
+  content
 end
