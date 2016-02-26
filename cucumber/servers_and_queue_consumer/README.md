@@ -25,10 +25,14 @@ Para realização da request ao serviço será utilizado a gem __HTTParty__.
 
 ## Documentação
 
+Ruby Guia do Why: [http://why.carlosbrando.com/](http://why.carlosbrando.com/)
+
 Capybara Cheatsheet: [https://upcase.com/test-driven-rails-resources/capybara.pdf](https://upcase.com/test-driven-rails-resources/capybara.pdf)
 
 HTTParty: [https://github.com/jnunemaker/httparty](https://github.com/jnunemaker/httparty) 
 
 RSpec Cheatsheet: [https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf](https://www.anchor.com.au/wp-content/uploads/rspec_cheatsheet_attributed.pdf)
+
+Capybara + Cucumber: [http://www.rubydoc.info/github/jnicklas/capybara#using-capybara-with-cucumber](http://www.rubydoc.info/github/jnicklas/capybara#using-capybara-with-cucumber)
 
 
