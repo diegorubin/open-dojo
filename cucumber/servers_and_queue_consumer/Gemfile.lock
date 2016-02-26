@@ -180,6 +180,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   bunny
+  byebug
   capybara
   chromedriver-helper
   cucumber
@@ -193,6 +194,7 @@ DEPENDENCIES
   jsonpath
   poltergeist
   pry
+  pry-byebug
   pry-meta
   rake
   rspec

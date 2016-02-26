@@ -25,3 +25,7 @@ gem 'sinatra'
 gem 'guard'
 gem 'guard-cucumber'
 
+# debugger
+gem 'byebug'
+gem 'pry-byebug'
+
