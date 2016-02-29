@@ -13,6 +13,7 @@ p.publish("teste")
 
 q.subscribe(:block => true, :manual_ack => true) do |delivery_info, properties, payload|
   name = properties[:headers]['name']
+  puts name
 
   unless WORDS.include?(name)
     f = File.open("files/#{name}", 'w')
