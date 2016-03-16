@@ -1,38 +1,41 @@
-Given(/^I logged on admin of rabbitmq$/) do
+Given(/^estou logado$/) do
   login_in_rabbit('guest', 'guest')
 end
 
-Given(/^in page of "([^"]*)" queue$/) do |queue|
-  click_on "Queues"
-  click_on queue
+Given(/^acesso a fila "([^"]*)"$/) do |arg1|
+  click_on 'Queues'
+  click_on 'dojo'
 end
 
-When(/^set the message with header "([^"]*)" with value "([^"]*)"$/) do |key, value, message|
+When(/^seto o header "([^"]*)" e com valor "([^"]*)"$/) do |header, value|
+  @value = value
+  if not find('#headers_1_mfkey', visible: false).visible?
+    find('h2', :text => 'Publish message').click
+  end
+
+  fill_in 'headers_1_mfkey', with: header
+  fill_in 'headers_1_mfvalue', with: value
+end
+
+When(/^digito a mensagem "([^"]*)"$/) do |message|
   @message = message
-  publish_message(message, headers: {key => value})
+  fill_in 'payload', with: message
 end
 
-When(/^fetch "([^"]*)" file from api$/) do |name|
-  @response = HTTParty.get("http://localhost:4567/api/#{name}", 
-                        headers: {'Content-type' => 'text/plain'})
+When(/^clico em enviar$/) do
+  click_on 'Publish message'
 end
 
-Then(/^the response should be the message$/) do
-  expect(@response.body.gsub("\r", "").chop).to eql @message
+Then(/^mensagem eh postada$/) do
+  expect(page).to have_content('Message published.')
 end
 
-Then(/^the response status code should be "([^"]*)"$/) do |code|
-  expect(@response.response.code).to eql code
+Then(/^o serviço deve retornar o conteúdo postado$/) do
+  response = HTTParty.get('http://localhost:4567/api/valor')
+  expect(response.body.chop).to eql(@message)
 end
 
-Then(/^a messsage exists on "([^"]*)" queue with "([^"]*)" in payload$/) do |queue, content|
-  click_on "Queues"
-  click_on queue
-
-  find('h2', :text => 'Get messages').click
-
-  click_on 'Get Message(s)'
-
-  expect(page).to have_content(content)
+Then(/^o serviço deve retornar "([^"]*)"$/) do |statuscode|
+  response = HTTParty.get("http://localhost:4567/api/#{@value}")
+  expect(response.code).to eql(statuscode.to_i)
 end
-
