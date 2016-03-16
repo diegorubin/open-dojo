@@ -1,23 +1,26 @@
 Feature: put message in the queue and retrieve results by service
+  Background:
+    Given I logged on admin of rabbitmq
 
-Background:
-Given usuário logado "guest" e senha "guest"
+  Scenario: Put a message on queue and get content via service
+    Given in page of "dojo" queue
+    When set the message with header "name" with value "message1"
+    """
+    content
+    of
+    message
+    """
+    And fetch "message1" file from api
+    Then the response should be the message
 
-Scenario Outline:postar mensagem na fila "dojo" e verificar se o valor foi salvo
-When acessar a fila "dojo"
-And inserir o header <header> igual a <value>
-And postar conteúdo <payload> na fila dojo
-Then recuperar arquivo <value> com conteúdo <payload>
-
-Examples:
-|header|value|payload|
-|"name" |"arquivoX"|"X"|
-|"name"| "outro_arquivoX"| "outroX"|
-
-
-Scenario:postar mensagem inválida na fila e verificar resultado
-When acessar a fila "dojo"
-And inserir o header "name" igual a "teste"
-And postar conteúdo "Y" na fila dojo
-Then não recuperar arquivo "teste"
-And verificar na fila "erro" o nome do arquivo "teste"
+  Scenario: Not create forbidden file
+    Given in page of "dojo" queue
+    When set the message with header "name" with value "xurisso"
+    """
+    content
+    of
+    message
+    """
+    And fetch "xurisso" file from api
+    Then the response status code should be "404"
+    And a messsage exists on "erro" queue with "xurisso" in payload

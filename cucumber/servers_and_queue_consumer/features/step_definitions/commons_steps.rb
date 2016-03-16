@@ -1,50 +1,38 @@
-Given(/^usuário logado "([^"]*)" e senha "([^"]*)"$/) do |arg1, arg2|
-  visit "http://localhost:15672"
-  first = first("input")
-  if first[:name] == "username"
-    fill_in "username", with: arg1
-    fill_in "password", with: arg2
-    click_on "Login"
-  end
+Given(/^I logged on admin of rabbitmq$/) do
+  login_in_rabbit('guest', 'guest')
 end
 
-When(/^acessar a fila "([^"]*)"$/) do |arg1|
-click_on "Queues"
-click_on arg1
-end
-
-When(/^inserir o header "([^"]*)" igual a "([^"]*)"$/) do |arg1, arg2|
-  if not find("#headers_1_mfkey", visible:false).visible?
-    find("h2", text: "Publish message").click
-  end
-  fill_in "headers_1_mfkey", with: arg1
-  fill_in "headers_1_mfvalue", with: arg2
-end
-
-When(/^postar conteúdo "([^"]*)" na fila dojo$/) do |arg1|
-  fill_in "payload", with:arg1
-  click_on "Publish message"
-end
-
-Then(/^recuperar arquivo "([^"]*)" com conteúdo "([^"]*)"$/) do |arg1, arg2|
-  response = HTTParty.get "http://localhost:4567/api/#{arg1}"
-  expect(response.body.chop).to eq(arg2)
-end
-
-Then(/^não recuperar arquivo "([^"]*)"$/) do |arg1|
-out = HTTParty.get "http://localhost:4567/api/#{arg1}"
-expect(out.response.code).to eq("404")
-end
-
-Then(/^verificar na fila "([^"]*)" o nome do arquivo "([^"]*)"$/) do |arg1, arg2|
+Given(/^in page of "([^"]*)" queue$/) do |queue|
   click_on "Queues"
-  click_on arg1
-
-  if not find("[name='count']", visible:false).visible?
-    find("h2", text: "Get messages").click
-  end
-  click_on "Get Message(s)"
-  teste=find(".msg-payload")
-  expect(teste).to have_content arg2
-
+  click_on queue
 end
+
+When(/^set the message with header "([^"]*)" with value "([^"]*)"$/) do |key, value, message|
+  @message = message
+  publish_message(message, headers: {key => value})
+end
+
+When(/^fetch "([^"]*)" file from api$/) do |name|
+  @response = HTTParty.get("http://localhost:4567/api/#{name}", 
+                        headers: {'Content-type' => 'text/plain'})
+end
+
+Then(/^the response should be the message$/) do
+  expect(@response.body.gsub("\r", "").chop).to eql @message
+end
+
+Then(/^the response status code should be "([^"]*)"$/) do |code|
+  expect(@response.response.code).to eql code
+end
+
+Then(/^a messsage exists on "([^"]*)" queue with "([^"]*)" in payload$/) do |queue, content|
+  click_on "Queues"
+  click_on queue
+
+  find('h2', :text => 'Get messages').click
+
+  click_on 'Get Message(s)'
+
+  expect(page).to have_content(content)
+end
+

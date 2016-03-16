@@ -7,6 +7,10 @@ require 'httparty'
 require 'capybara/poltergeist'
 require 'rubygems'
 
+require File.join(File.dirname(__FILE__), 'helpers', 'rabbitmq')
+
+include Rabbitmq
+
 # Configs for chrome
 Capybara.default_driver = :selenium
 Capybara.run_server = false
